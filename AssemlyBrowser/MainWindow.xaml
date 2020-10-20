@@ -1,0 +1,42 @@
+﻿<Window x:Class="AssemlyBrowser.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AssemlyBrowser"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="0*"/>
+        </Grid.ColumnDefinitions>
+        <DockPanel>
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="_File">
+                    <MenuItem Header="_Open" />
+                    <Separator />
+                    <MenuItem Header="_Exit" />
+                </MenuItem>
+            </Menu>
+            <TextBox AcceptsReturn="True" />
+            <TreeView Height="392" VerticalAlignment="Top" Width="775" Margin="0,0.4,0,0">
+                <TextBox>Assembly Information</TextBox>
+                <TreeViewItem Header="">
+                    <TreeViewItem Header="" />
+                </TreeViewItem>
+                <TreeViewItem Header="">
+                    <TreeViewItem Header="">
+                        <TreeViewItem Header="" />
+
+                    </TreeViewItem>
+                    <TreeViewItem Header="">
+                        <TreeViewItem Header="" />
+                    </TreeViewItem>
+                </TreeViewItem>
+            </TreeView>
+        </DockPanel>
+
+    </Grid>
+</Window>

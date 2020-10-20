@@ -44,12 +44,25 @@ namespace AssemblyLibrary
     {
         public string fieldType;
         public string fieldName { get; set; }
+
+        public AssemblyField(string type, string name)
+        {
+            fieldType = type;
+            fieldName = name;
+        }
     }
 
     public class AssemblyProperty
     {
         public string propertyType;
         public string propertyName { get; set; }
+
+        public AssemblyProperty(string type,string name)
+        {
+            propertyType = type;
+            propertyName = name;
+        }
+
     }
 
     public class AssemblyMethod

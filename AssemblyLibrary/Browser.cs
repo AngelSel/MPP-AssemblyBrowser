@@ -1,11 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using System.Text;
 
 namespace AssemblyLibrary
 {
     class Browser
     {
+        private Assembly LoadAssembly(string assemblyPath)
+        {
+            FileInfo file = new FileInfo(assemblyPath);
+            Assembly currentAssembly = Assembly.LoadFrom(file.FullName);
+            return currentAssembly;
+        }
 
         public AssemblyInfo GetResult()
         {
@@ -34,9 +42,19 @@ namespace AssemblyLibrary
         /// method for getting list of fields from current namespace
         /// </summary>
         /// <returns></returns>
-        private List<AssemblyField> GetFields()
+        private List<AssemblyField> GetFields(Type type)
         {
             List<AssemblyField> currentFields = new List<AssemblyField>();
+
+            foreach(FieldInfo f in type.GetFields())
+            {
+                AssemblyField assemblyField = new AssemblyField(f.FieldType.Name, f.Name);
+                
+                
+                //check for compilator generated fileds
+                currentFields.Add(assemblyField);
+
+            }        
 
             return currentFields;
         }
@@ -46,10 +64,18 @@ namespace AssemblyLibrary
         /// method for getting list of properties from current namespace
         /// </summary>
         /// <returns></returns>
-        private List<AssemblyProperty> GetProperties()
+        private List<AssemblyProperty> GetProperties(Type type)
         {
             List<AssemblyProperty> currentProperties = new List<AssemblyProperty>();
 
+            foreach (PropertyInfo f in type.GetProperties())
+            {
+                AssemblyProperty assemblyProperty = new AssemblyProperty(f.PropertyType.Name, f.Name);
+
+
+                //check for compilator generated fileds
+                currentProperties.Add(assemblyProperty);
+            }
             return currentProperties;
 
         }

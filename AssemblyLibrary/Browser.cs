@@ -7,7 +7,7 @@ using System.Text;
 
 namespace AssemblyLibrary
 {
-    class Browser
+    public class Browser
     {
         private Assembly LoadAssembly(string assemblyPath)
         {
@@ -27,16 +27,16 @@ namespace AssemblyLibrary
                 typeInfo.fields = GetFields(t);
                 typeInfo.properties = GetProperties(t);
                 typeInfo.methods = GetMethods(t);
-                if(assemblyInfo.ContainsKey(t.Name))
+                if(assemblyInfo.ContainsKey(t.Namespace))
                 {
-                    assemblyInfo[t.Name].Add(typeInfo);
+                    assemblyInfo[t.Namespace].Add(typeInfo);
 
                 }
                 else
                 {
                     List<TypeInfo> infos = new List<TypeInfo>();
                     infos.Add(typeInfo);
-                    assemblyInfo.Add(t.Name, infos);
+                    assemblyInfo.Add(t.Namespace, infos);
                 }
             }
 

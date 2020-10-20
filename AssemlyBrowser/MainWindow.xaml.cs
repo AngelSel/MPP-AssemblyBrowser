@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AssemblyLibrary;
 
 namespace AssemlyBrowser
 {
@@ -28,6 +29,14 @@ namespace AssemlyBrowser
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        {
+            Browser browser = new Browser();
+            AssemblyInfo a = browser.GetResult(@"d:\Ангелина\5 сем\5 сем\СПП\Lab2-MPP\MPP-Faker\FakerLibrary\bin\Debug\netstandard2.0\FakerLibrary.dll");
+            string s = "ddd";
+        
         }
     }
 }

@@ -16,10 +16,6 @@ namespace AssemblyLibrary
             return currentAssembly;
         }
 
-        /// <summary>
-        /// method for loading namespaces from current assembly
-        /// </summary>
-        /// <returns></returns>
         private List<AssemblyNamespace> GetNamespaces(Assembly assembly)
         {
             List<AssemblyNamespace> namespaces = new List<AssemblyNamespace>();
@@ -54,24 +50,15 @@ namespace AssemblyLibrary
         }
 
 
-
         public AssemblyInfo GetResult(string assemblyPath)
         {
-
             Assembly assembly = LoadAssembly(assemblyPath);
-
             List<AssemblyNamespace> namespaces = GetNamespaces(assembly);
-
             AssemblyInfo assemblyInfo = new AssemblyInfo(assembly.FullName,namespaces);
 
             return assemblyInfo;
         }
 
-
-        /// <summary>
-        /// method for getting list of fields from current namespace
-        /// </summary>
-        /// <returns></returns>
         private List<AssemblyField> GetFields(Type type)
         {
             List<AssemblyField> currentFields = new List<AssemblyField>();
@@ -79,21 +66,13 @@ namespace AssemblyLibrary
             foreach(FieldInfo f in type.GetFields())
             {
                 AssemblyField assemblyField = new AssemblyField(f.FieldType.Name, f.Name);
-                
-                
-                //check for compilator generated fileds
-                currentFields.Add(assemblyField);
-
+                               
+                if(!IsCompilerGenerated(f.FieldType))
+                    currentFields.Add(assemblyField);
             }        
-
             return currentFields;
         }
 
-
-        /// <summary>
-        /// method for getting list of properties from current namespace
-        /// </summary>
-        /// <returns></returns>
         private List<AssemblyProperty> GetProperties(Type type)
         {
             List<AssemblyProperty> currentProperties = new List<AssemblyProperty>();
@@ -103,17 +82,11 @@ namespace AssemblyLibrary
                 AssemblyProperty assemblyProperty = new AssemblyProperty(p.PropertyType.Name, p.Name);
 
 
-                //check for compilator generated fileds
-                currentProperties.Add(assemblyProperty);
+                if (!IsCompilerGenerated(p.PropertyType))
+                    currentProperties.Add(assemblyProperty);
             }
             return currentProperties;
-
         }
-
-        /// <summary>
-        /// methods for getting list of methods from current namespace
-        /// </summary>
-        /// <returns></returns>
 
         private List<AssemblyMethod> GetMethods(Type type)
         {
@@ -126,7 +99,6 @@ namespace AssemblyLibrary
                 
                 AssemblyMethod assemblyMethod = new AssemblyMethod(m.Name, currentMethodSignature);
                 currentMethods.Add(assemblyMethod);
-
             }
 
             return currentMethods;
@@ -134,11 +106,24 @@ namespace AssemblyLibrary
 
         private string GetMethodSignature(MethodInfo method)
         {
-            string signature = null;
+            StringBuilder signature = new StringBuilder();
+            signature.Append("(");
 
-            //
+            ParameterInfo[] parameters = method.GetParameters();
+            foreach(ParameterInfo p in parameters)
+            {
+                if (p.IsOut)
+                    signature.Append("out ");
+                else if (p.IsIn)
+                    signature.Append("in ");
+                else if (p.ParameterType.IsByRef)
+                    signature.Append("ref ");
+                signature.Append(p.ParameterType.Name+',');
+            }
+            if (signature[signature.Length - 1] == ',')
+                signature[signature.Length - 1] = ')';
 
-            return signature;
+            return signature.ToString();
         }
 
         private bool IsCompilerGenerated(Type type)
@@ -149,7 +134,5 @@ namespace AssemblyLibrary
             }
             return true;
         }
-
-
     }
 }

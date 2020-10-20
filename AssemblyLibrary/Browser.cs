@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace AssemblyLibrary
@@ -15,26 +16,55 @@ namespace AssemblyLibrary
             return currentAssembly;
         }
 
-        public AssemblyInfo GetResult()
-        {
-           
-            //here should be some method for loading namespaces from current assembly
-            
-            //call of GetInformation method
-
-        }
         /// <summary>
         /// method for loading namespaces from current assembly
         /// </summary>
         /// <returns></returns>
-        private List<AssemblyNamespace> GetInformation()
+        private List<AssemblyNamespace> GetNamespaces(Assembly assembly)
         {
-            List<AssemblyNamespace> currentNamespaces = new List<AssemblyNamespace>();
+            List<AssemblyNamespace> namespaces = new List<AssemblyNamespace>();
+            Type[] types = assembly.GetTypes();
+            Dictionary<string, List<TypeInfo>> assemblyInfo = new Dictionary<string, List<TypeInfo>>();
+            foreach(Type t in types)
+            {
+                TypeInfo typeInfo = new TypeInfo(t.Name);
+                typeInfo.fields = GetFields(t);
+                typeInfo.properties = GetProperties(t);
+                typeInfo.methods = GetMethods(t);
+                if(assemblyInfo.ContainsKey(t.Name))
+                {
+                    assemblyInfo[t.Name].Add(typeInfo);
 
-            //here we should work with each namespace: get lists of fields,properties and methods
+                }
+                else
+                {
+                    List<TypeInfo> infos = new List<TypeInfo>();
+                    infos.Add(typeInfo);
+                    assemblyInfo.Add(t.Name, infos);
+                }
+            }
+
+            foreach(string k in assemblyInfo.Keys)
+            {
+                AssemblyNamespace assemblyNamespace = new AssemblyNamespace(k,assemblyInfo[k]);
+                namespaces.Add(assemblyNamespace);
+            }
+
+            return namespaces;
+        }
 
 
-            return currentNamespaces;
+
+        public AssemblyInfo GetResult(string assemblyPath)
+        {
+
+            Assembly assembly = LoadAssembly(assemblyPath);
+
+            List<AssemblyNamespace> namespaces = GetNamespaces(assembly);
+
+            AssemblyInfo assemblyInfo = new AssemblyInfo(assembly.FullName,namespaces);
+
+            return assemblyInfo;
         }
 
 
@@ -68,9 +98,9 @@ namespace AssemblyLibrary
         {
             List<AssemblyProperty> currentProperties = new List<AssemblyProperty>();
 
-            foreach (PropertyInfo f in type.GetProperties())
+            foreach (PropertyInfo p in type.GetProperties())
             {
-                AssemblyProperty assemblyProperty = new AssemblyProperty(f.PropertyType.Name, f.Name);
+                AssemblyProperty assemblyProperty = new AssemblyProperty(p.PropertyType.Name, p.Name);
 
 
                 //check for compilator generated fileds
@@ -85,11 +115,39 @@ namespace AssemblyLibrary
         /// </summary>
         /// <returns></returns>
 
-        private List<AssemblyMethod> GetMethods()
+        private List<AssemblyMethod> GetMethods(Type type)
         {
             List<AssemblyMethod> currentMethods = new List<AssemblyMethod>();
 
+            string currentMethodSignature;
+            foreach(MethodInfo m in type.GetMethods())
+            {
+                currentMethodSignature = GetMethodSignature(m);
+                
+                AssemblyMethod assemblyMethod = new AssemblyMethod(m.Name, currentMethodSignature);
+                currentMethods.Add(assemblyMethod);
+
+            }
+
             return currentMethods;
+        }
+
+        private string GetMethodSignature(MethodInfo method)
+        {
+            string signature = null;
+
+            //
+
+            return signature;
+        }
+
+        private bool IsCompilerGenerated(Type type)
+        {
+            if(Attribute.GetCustomAttribute(type,typeof(CompilerGeneratedAttribute)) == null)
+            {
+                return false;
+            }
+            return true;
         }
 
 

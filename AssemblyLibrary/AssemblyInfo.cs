@@ -10,30 +10,34 @@ namespace AssemblyLibrary
     {
         public string assemblyName { get; set; }
         public IList<AssemblyNamespace> namespaces;
-        public AssemblyInfo()
+        public AssemblyInfo(string name, List<AssemblyNamespace> n)
         {
-            namespaces = new List<AssemblyNamespace>();
+            assemblyName = name;
+            namespaces = n;
         }
     }
 
     public class AssemblyNamespace
     {
-        public IList<NamespaceInfo> info;
+        public IList<TypeInfo> info;
         public string namespaceName { get; set; }
 
-        public AssemblyNamespace()
+        public AssemblyNamespace(string name, List<TypeInfo> types )
         {
-            info = new List<NamespaceInfo>();
+            namespaceName = name;
+            info = types;
         }
     }
 
-    public class NamespaceInfo
+    public class TypeInfo
     {
+        public string typeName { get; set; }
         public IList<AssemblyField> fields { get; set; }
         public IList<AssemblyProperty> properties { get; set; }
         public IList<AssemblyMethod> methods { get; set; }
-        public NamespaceInfo()
+        public TypeInfo(string name)
         {
+            typeName = name;
             fields = new List<AssemblyField>();
             properties = new List<AssemblyProperty>();
             methods = new List<AssemblyMethod>();
@@ -69,6 +73,13 @@ namespace AssemblyLibrary
     {
         public string methodName;
         public string methodSignature;
+
+        public AssemblyMethod(string name, string signature)
+        {
+            methodName = name;
+            methodSignature = signature;
+        }
+
     }
 
 

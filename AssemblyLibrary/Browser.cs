@@ -75,8 +75,7 @@ namespace AssemblyLibrary
             string fieldType;
             foreach(FieldInfo f in type.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.DeclaredOnly))
             {
-                if (IsCompilerGenerated(f.FieldType))
-                    continue;
+                
                 if (f.FieldType.IsGenericType)
                     fieldType = GenericType(f.FieldType);
                 else
@@ -84,7 +83,8 @@ namespace AssemblyLibrary
 
                 AssemblyField assemblyField = new AssemblyField(fieldType, f.Name);
 
-                currentFields.Add(assemblyField);
+                if (!IsCompilerGenerated(f.FieldType))
+                    currentFields.Add(assemblyField);
             }        
             return currentFields;
         }
@@ -128,18 +128,6 @@ namespace AssemblyLibrary
         {
             StringBuilder signature = new StringBuilder();
    
-
-            if(method.IsGenericMethod)
-            {
-                var args = method.GetGenericArguments();
-                signature.Append('<');
-                foreach(Type t in args)
-                {
-                    signature.Append(t.Name + ',');
-                }
-                signature[signature.Length - 1] = '>';
-            }
-
             signature.Append("(");
             ParameterInfo[] parameters = method.GetParameters();
             foreach(ParameterInfo p in parameters)
@@ -150,7 +138,14 @@ namespace AssemblyLibrary
                     signature.Append("in ");
                 else if (p.ParameterType.IsByRef)
                     signature.Append("ref ");
-                signature.Append(p.ParameterType.Name+',');
+
+                if(p.ParameterType.IsGenericType)
+                {
+                    string s = GenericType(p.ParameterType);
+                    signature.Append(s + ',');
+                }
+                else
+                    signature.Append(p.ParameterType.Name+',');
             }
             if (signature[signature.Length - 1] == ',')
                 signature[signature.Length - 1] = ')';

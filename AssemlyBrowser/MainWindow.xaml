@@ -23,41 +23,39 @@
 
             <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Grid.Row="1">
                 <StackPanel>
-                    <TextBlock Text="{Binding AssemblyName}" Margin="30 5 0 0"/>
-                    <TreeView ItemsSource="{Binding AssemblyInfo}" Padding="0 0 0 0" BorderThickness="0">
+                    <TextBlock Text="{Binding AssemblyName}"/>
+                    <TreeView ItemsSource="{Binding AssemblyInfo}">
                         <TreeView.ItemTemplate>
                             <DataTemplate>
-                                <TreeViewItem Header="Namespace:">
-                                    <TreeViewItem Header="{Binding namespaceName}" BorderThickness="0">
-                                        <TreeViewItem Header="Types" ItemsSource="{Binding info}">
-                                            <TreeViewItem.ItemTemplate>
-                                                <DataTemplate>
-                                                    <TreeViewItem Header="{Binding typeName}" BorderThickness="0" IsExpanded="True">
-                                                        <TreeViewItem Header="Fields" ItemsSource="{Binding fields}" >
-                                                            <TreeViewItem.ItemTemplate>
-                                                                <DataTemplate>
-                                                                    <TextBlock Text="{Binding ToTreeView }"/>
-                                                                </DataTemplate>
-                                                            </TreeViewItem.ItemTemplate>
-                                                        </TreeViewItem>
-                                                        <TreeViewItem Header="Properties" ItemsSource="{Binding properties}" >
-                                                            <TreeViewItem.ItemTemplate>
-                                                                <DataTemplate>
-                                                                    <TextBlock Text="{Binding ToTreeView}"/>
-                                                                </DataTemplate>
-                                                            </TreeViewItem.ItemTemplate>
-                                                        </TreeViewItem>
-                                                        <TreeViewItem Header="Methods" ItemsSource="{Binding methods}" >
-                                                            <TreeViewItem.ItemTemplate>
-                                                                <DataTemplate>
-                                                                    <TextBlock Text="{Binding ToTreeView}"/>
-                                                                </DataTemplate>
-                                                            </TreeViewItem.ItemTemplate>
-                                                        </TreeViewItem>
+                                <TreeViewItem Header="{Binding namespaceName}" BorderThickness="0">
+                                    <TreeViewItem Header="Types" ItemsSource="{Binding info}">
+                                        <TreeViewItem.ItemTemplate>
+                                            <DataTemplate>
+                                                <TreeViewItem Header="{Binding typeName}" BorderThickness="0" IsExpanded="True">
+                                                    <TreeViewItem Header="Fields" ItemsSource="{Binding fields}" >
+                                                        <TreeViewItem.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock Text="{Binding ToTreeView }"/>
+                                                            </DataTemplate>
+                                                        </TreeViewItem.ItemTemplate>
                                                     </TreeViewItem>
-                                                </DataTemplate>
-                                            </TreeViewItem.ItemTemplate>
-                                        </TreeViewItem>
+                                                    <TreeViewItem Header="Properties" ItemsSource="{Binding properties}" >
+                                                        <TreeViewItem.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock Text="{Binding ToTreeView}"/>
+                                                            </DataTemplate>
+                                                        </TreeViewItem.ItemTemplate>
+                                                    </TreeViewItem>
+                                                    <TreeViewItem Header="Methods" ItemsSource="{Binding methods}" >
+                                                        <TreeViewItem.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock Text="{Binding ToTreeView}"/>
+                                                            </DataTemplate>
+                                                        </TreeViewItem.ItemTemplate>
+                                                    </TreeViewItem>
+                                                </TreeViewItem>
+                                            </DataTemplate>
+                                        </TreeViewItem.ItemTemplate>
                                     </TreeViewItem>
                                 </TreeViewItem>
                             </DataTemplate>

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Reflection;
+﻿using System.Collections.Generic;
 
 namespace AssemblyLibrary
 {
@@ -84,8 +81,6 @@ namespace AssemblyLibrary
         }
 
     }
-
-
 
 
 }

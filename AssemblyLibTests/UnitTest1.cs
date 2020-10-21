@@ -13,7 +13,7 @@ namespace AssemblyLibTests
         public AssemblyInfo assemblyInfo;
 
         [TestInitialize]
-        public void Init()
+        public void Setup()
         {
             browser = new Browser();
             assemblyInfo = browser.GetResult(@"d:\Ангелина\5 сем\5 сем\СПП\Lab2-MPP\MPP-Faker\FakerLibrary\bin\Debug\netstandard2.0\FakerLibrary.dll");
@@ -29,7 +29,8 @@ namespace AssemblyLibTests
         [TestMethod]
         public void TypesCount()
         {
-            int typesCountExpected = 7;
+            int typesCountExpectedFaker = 5;
+            int typesCountExpectedGens = 7;
 
             var namespaces = assemblyInfo.namespaces;
             var typesFaker = namespaces.First(n => n.namespaceName == "FakerLibrary").info;
@@ -38,8 +39,8 @@ namespace AssemblyLibTests
             var typesGenerators = namespaces.First(n => n.namespaceName == "FakerLibrary.Generators.TypesGenerators").info;
             int typesCountActualGenerators = typesGenerators.Count;
 
-            Assert.AreEqual(typesCountExpected, typesCountActualFaker);
-            Assert.AreEqual(typesCountExpected, typesCountActualGenerators);
+            Assert.AreEqual(typesCountExpectedFaker, typesCountActualFaker);
+            Assert.AreEqual(typesCountExpectedGens, typesCountActualGenerators);
         }
 
         [TestMethod()]

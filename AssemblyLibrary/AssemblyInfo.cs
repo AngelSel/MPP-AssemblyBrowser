@@ -9,7 +9,8 @@ namespace AssemblyLibrary
     public class AssemblyInfo
     {
         public string assemblyName { get; set; }
-        public IList<AssemblyNamespace> namespaces;
+        public List<AssemblyNamespace> namespaces;
+
         public AssemblyInfo(string name, List<AssemblyNamespace> n)
         {
             assemblyName = name;
@@ -19,7 +20,7 @@ namespace AssemblyLibrary
 
     public class AssemblyNamespace
     {
-        public IList<TypeInfo> info;
+        public List<TypeInfo> info { get; set; }
         public string namespaceName { get; set; }
 
         public AssemblyNamespace(string name, List<TypeInfo> types )
@@ -32,9 +33,9 @@ namespace AssemblyLibrary
     public class TypeInfo
     {
         public string typeName { get; set; }
-        public IList<AssemblyField> fields { get; set; }
-        public IList<AssemblyProperty> properties { get; set; }
-        public IList<AssemblyMethod> methods { get; set; }
+        public List<AssemblyField> fields { get; set; }
+        public List<AssemblyProperty> properties { get; set; }
+        public List<AssemblyMethod> methods { get; set; }
         public TypeInfo(string name)
         {
             typeName = name;
@@ -48,6 +49,7 @@ namespace AssemblyLibrary
     {
         public string fieldType;
         public string fieldName { get; set; }
+        public string ToTreeView { get { return fieldType + " " + fieldName; } }
 
         public AssemblyField(string type, string name)
         {
@@ -60,6 +62,7 @@ namespace AssemblyLibrary
     {
         public string propertyType;
         public string propertyName { get; set; }
+        public string ToTreeView { get { return propertyType + " " + propertyName; } }
 
         public AssemblyProperty(string type,string name)
         {
@@ -71,9 +74,9 @@ namespace AssemblyLibrary
 
     public class AssemblyMethod
     {
-        public string methodName;
+        public string methodName { get; set; }
         public string methodSignature;
-
+        public string ToTreeView { get { return methodName + " " + methodSignature; } }
         public AssemblyMethod(string name, string signature)
         {
             methodName = name;

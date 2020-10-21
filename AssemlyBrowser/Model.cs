@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace AssemlyBrowser
 {
-    class Model : INotifyPropertyChanged
+    public class Model : INotifyPropertyChanged
     {
 
         public event PropertyChangedEventHandler PropertyChanged;

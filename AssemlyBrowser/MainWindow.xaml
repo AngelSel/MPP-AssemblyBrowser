@@ -14,28 +14,57 @@
         </Grid.ColumnDefinitions>
         <DockPanel>
             <Menu DockPanel.Dock="Top">
-                <MenuItem Header="_File" Click="MenuItem_Click_1">
-                    <MenuItem Header="_Open" />
+                <MenuItem Header="File">
+                    <MenuItem Header="Open" Command = "{Binding OpenFile}" />
                     <Separator />
                     <MenuItem Header="_Exit" />
                 </MenuItem>
             </Menu>
-            <TextBox AcceptsReturn="True" />
-            <TreeView Height="392" VerticalAlignment="Top" Width="775" Margin="0,0.4,0,0">
-                <TextBox>Assembly Information</TextBox>
-                <TreeViewItem Header="">
-                    <TreeViewItem Header="" />
-                </TreeViewItem>
-                <TreeViewItem Header="">
-                    <TreeViewItem Header="">
-                        <TreeViewItem Header="" />
 
-                    </TreeViewItem>
-                    <TreeViewItem Header="">
-                        <TreeViewItem Header="" />
-                    </TreeViewItem>
-                </TreeViewItem>
-            </TreeView>
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Grid.Row="1">
+                <StackPanel>
+                    <TextBlock Text="{Binding AssemblyName}" Margin="30 5 0 0"/>
+                    <TreeView ItemsSource="{Binding AssemblyInfo}" Padding="0 0 0 0" BorderThickness="0">
+                        <TreeView.ItemTemplate>
+                            <DataTemplate>
+                                <TreeViewItem Header="Namespace:">
+                                    <TreeViewItem Header="{Binding namespaceName}" BorderThickness="0">
+                                        <TreeViewItem Header="Types" ItemsSource="{Binding info}">
+                                            <TreeViewItem.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TreeViewItem Header="{Binding typeName}" BorderThickness="0" IsExpanded="True">
+                                                        <TreeViewItem Header="Fields" ItemsSource="{Binding fields}" >
+                                                            <TreeViewItem.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <TextBlock Text="{Binding ToTreeView }"/>
+                                                                </DataTemplate>
+                                                            </TreeViewItem.ItemTemplate>
+                                                        </TreeViewItem>
+                                                        <TreeViewItem Header="Properties" ItemsSource="{Binding properties}" >
+                                                            <TreeViewItem.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <TextBlock Text="{Binding ToTreeView}"/>
+                                                                </DataTemplate>
+                                                            </TreeViewItem.ItemTemplate>
+                                                        </TreeViewItem>
+                                                        <TreeViewItem Header="Methods" ItemsSource="{Binding methods}" >
+                                                            <TreeViewItem.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <TextBlock Text="{Binding ToTreeView}"/>
+                                                                </DataTemplate>
+                                                            </TreeViewItem.ItemTemplate>
+                                                        </TreeViewItem>
+                                                    </TreeViewItem>
+                                                </DataTemplate>
+                                            </TreeViewItem.ItemTemplate>
+                                        </TreeViewItem>
+                                    </TreeViewItem>
+                                </TreeViewItem>
+                            </DataTemplate>
+                        </TreeView.ItemTemplate>
+                    </TreeView>
+                </StackPanel>
+            </ScrollViewer>
         </DockPanel>
 
     </Grid>

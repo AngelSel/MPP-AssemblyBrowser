@@ -75,16 +75,18 @@ namespace AssemblyLibrary
             string fieldType;
             foreach(FieldInfo f in type.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.DeclaredOnly))
             {
-                
+
+                if (f.GetCustomAttribute<CompilerGeneratedAttribute>() != null)
+                    continue;
+
                 if (f.FieldType.IsGenericType)
                     fieldType = GenericType(f.FieldType);
                 else
                     fieldType = f.FieldType.Name;
 
                 AssemblyField assemblyField = new AssemblyField(fieldType, f.Name);
-
-                if (!IsCompilerGenerated(f.FieldType))
-                    currentFields.Add(assemblyField);
+                   
+                currentFields.Add(assemblyField);
             }        
             return currentFields;
         }

@@ -1,14 +1,13 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using AssemblyLibrary;
 using System.Linq;
+using System.IO;
 
 namespace AssemblyLibTests
 {
     [TestClass]
     public class UnitTest1
     {
-
         public Browser browser;
         public AssemblyInfo assemblyInfo;
 
@@ -16,10 +15,12 @@ namespace AssemblyLibTests
         public void Setup()
         {
             browser = new Browser();
-            assemblyInfo = browser.GetResult(@"d:\Ангелина\5 сем\5 сем\СПП\Lab2-MPP\MPP-Faker\FakerLibrary\bin\Debug\netstandard2.0\FakerLibrary.dll");
+            string pluginsPath = Directory.GetCurrentDirectory() + "\\FakerLibrary.dll";
+            assemblyInfo = browser.GetResult(pluginsPath);
         }
 
-        [TestMethod()]
+
+        [TestMethod]
         public void NamespaceNameTest()
         {
             var namespaces = assemblyInfo.namespaces;
@@ -44,7 +45,7 @@ namespace AssemblyLibTests
         }
 
         [TestMethod()]
-        public void TypeCheck()
+        public void MethodsCheck()
         {
             var namespaces = assemblyInfo.namespaces;
             var testType = namespaces.First(n => n.namespaceName == "FakerLibrary").info.FirstOrDefault(t => t.typeName == "IGenerator");
@@ -57,6 +58,20 @@ namespace AssemblyLibTests
             Assert.IsTrue(testType.methods.FirstOrDefault(m => m.methodName == methodname).methodSignature == methodSignature);
         }
 
+        [TestMethod()]
+        public void TypeCheck()
+        {
+            var namespaces = assemblyInfo.namespaces;
+            var testType = namespaces.First(n => n.namespaceName == "FakerLibrary").info.FirstOrDefault(t => t.typeName == "Faker");
+            int expectedFieldsAmounts = 4;
+            int expectedPropertiesAmounts = 1;
+            int expectedMethodsAmounts = 10;
+
+            Assert.IsNotNull(testType);
+            Assert.AreEqual(expectedFieldsAmounts,testType.fields.Count);
+            Assert.AreEqual(expectedPropertiesAmounts, testType.properties.Count);
+            Assert.AreEqual(expectedMethodsAmounts, testType.methods.Count);
+        }
 
 
     }
